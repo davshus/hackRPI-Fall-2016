@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{C1728765-5E40-E547-B383-153A775C198D}") = "hackRPI-Fall-2016", "Assembly-CSharp.csproj", "{0E7A1D53-ECF8-F515-3F70-588073DE034D}"
+EndProject
+Project("{C1728765-5E40-E547-B383-153A775C198D}") = "hackRPI-Fall-2016", "Assembly-CSharp-Editor.csproj", "{BABDAEBE-9149-C844-86CD-27A37D7C4A6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E7A1D53-ECF8-F515-3F70-588073DE034D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7A1D53-ECF8-F515-3F70-588073DE034D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7A1D53-ECF8-F515-3F70-588073DE034D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7A1D53-ECF8-F515-3F70-588073DE034D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BABDAEBE-9149-C844-86CD-27A37D7C4A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABDAEBE-9149-C844-86CD-27A37D7C4A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABDAEBE-9149-C844-86CD-27A37D7C4A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABDAEBE-9149-C844-86CD-27A37D7C4A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
