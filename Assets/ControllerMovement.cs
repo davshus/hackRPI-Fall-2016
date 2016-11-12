@@ -29,7 +29,6 @@ public class ControllerMovement : MonoBehaviour {
         {
             Debug.Log("RIGHT");
         }
-        else Debug.Log("Nope!");
 	}
 
     private bool holding(OVRInput.Button butt) {
