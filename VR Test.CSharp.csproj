@@ -78,6 +78,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="VR Test.CSharp.Plugins.csproj">
+      <Project>{45FB3476-9133-176D-C21A-AC5E69C89BD7}</Project>
+      <Name>VR Test.CSharp.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\ControllerMovement.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\Algorithms\SlidingMax.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\Algorithms\SmoothedFloat.cs" />
@@ -173,6 +179,7 @@
     <Compile Include="Assets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
     <Compile Include="Assets\OVR\Scripts\Util\OVRScreenFade.cs" />
     <Compile Include="Assets\OVR\Scripts\Util\OVRWaitCursor.cs" />
+    <Compile Include="Assets\Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LeapMotion\Dependencies.txt" />
@@ -188,6 +195,10 @@
     <None Include="Assets\OVR\Shaders\OVRColorRampAlpha.shader" />
     <None Include="Assets\OVR\Shaders\Unlit Crosshair.shader" />
     <None Include="Assets\Plugins\donotdelete.txt" />
+    <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
