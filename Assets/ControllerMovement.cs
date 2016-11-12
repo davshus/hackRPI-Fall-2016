@@ -3,43 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ControllerMovement : MonoBehaviour {
-
 	// Use this for initialization
+	public AudioSource audsrc;
+	public Transform tr;
+	Transform trf;
+	public float speed = 1;
 	void Start () {
-		
+		trf = GetComponent<Transform> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        float speed = 1;
+        
         float x = 0, z = 0;
-        Debug.Log("1");
-        if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Gamepad)) {
-            Debug.Log("Pressing 1");
+		if (holding(OVRInput.Button.One)) {
+			if (audsrc.isPlaying)
+				audsrc.Stop ();
+			audsrc.Play ();
         }
         if (holding(OVRInput.Button.Up))
         {
-            z += 1;
-            Debug.Log("Up!");
+			z++;
         }
         if (holding(OVRInput.Button.Down))
         {
-            z -= 1;
+			z--;
         }
         if (holding(OVRInput.Button.Left))
         {
-            x -= 1;
+			x--;
         }
         if (holding(OVRInput.Button.Right))
         {
-            x += 1;
-        }
-        getTransform().position += getTransform().forward * z + getTransform().right * x;
+			x++;
+    	}
+
+
+		Vector3 f = tr.forward * z + tr.right * x;
+		f.y = 0;
+		trf.position += f * Time.deltaTime * speed;
 	}
 
-    private Transform getTransform() {
-        return gameObject.transform;
-    }
 
     private bool holding(OVRInput.Button butt) {
         return OVRInput.Get(butt, OVRInput.Controller.Remote) || OVRInput.Get(butt, OVRInput.Controller.Gamepad);
