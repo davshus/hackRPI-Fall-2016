@@ -142,10 +142,7 @@
      <Compile Include="Assets\OVR\Scripts\Util\OVRScreenFade.cs" />
      <Compile Include="Assets\OVR\Scripts\Util\OVRWaitCursor.cs" />
      <Compile Include="Assets\Player.cs" />
-<<<<<<< movement
-=======
      <Compile Include="Assets\Pseudochild.cs" />
->>>>>>> local
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotion\Resources\LeapCG.cginc" />
      <None Include="Assets\LeapMotion\README_BEFORE_UPDATING.txt" />
