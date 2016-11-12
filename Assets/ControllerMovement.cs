@@ -12,24 +12,34 @@ public class ControllerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float speed = 1;
-        Vector3 direction = new Vector3(0, 0, 0);
+        float x = 0, z = 0;
+        Debug.Log("1");
+        if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Gamepad)) {
+            Debug.Log("Pressing 1");
+        }
         if (holding(OVRInput.Button.Up))
         {
-            Debug.Log("UP");
+            z += 1;
+            Debug.Log("Up!");
         }
         if (holding(OVRInput.Button.Down))
         {
-            Debug.Log("DOWN");
+            z -= 1;
         }
         if (holding(OVRInput.Button.Left))
         {
-            Debug.Log("LEFT");
+            x -= 1;
         }
         if (holding(OVRInput.Button.Right))
         {
-            Debug.Log("RIGHT");
+            x += 1;
         }
+        getTransform().position += getTransform().forward * z + getTransform().right * x;
 	}
+
+    private Transform getTransform() {
+        return gameObject.transform;
+    }
 
     private bool holding(OVRInput.Button butt) {
         return OVRInput.Get(butt, OVRInput.Controller.Remote) || OVRInput.Get(butt, OVRInput.Controller.Gamepad);
