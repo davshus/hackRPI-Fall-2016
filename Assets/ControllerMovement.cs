@@ -11,6 +11,7 @@ public class ControllerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Remote)) Debug.Log("RIGHT");
+        else Debug.Log("Nope!");
 	}
 }
