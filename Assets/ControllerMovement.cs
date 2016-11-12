@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ControllerMovement : MonoBehaviour {
 	// Use this for initialization
+	public AudioSource audsrc;
 	public Transform tr;
 	Transform trf;
 	public float speed = 1;
@@ -15,8 +16,10 @@ public class ControllerMovement : MonoBehaviour {
 	void Update () {
         
         float x = 0, z = 0;
-        if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Gamepad)) {
-            Debug.Log("Pressing 1");
+		if (holding(OVRInput.Button.One)) {
+			if (audsrc.isPlaying)
+				audsrc.Stop ();
+			audsrc.Play ();
         }
         if (holding(OVRInput.Button.Up))
         {
