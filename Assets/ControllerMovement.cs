@@ -15,7 +15,7 @@ public class ControllerMovement : MonoBehaviour {
     bool ground = true;
     public GameObject hook;
     public float jumpSpeed = 1;
-
+    private bool isGrappling = false;
 	void Start () {
 		trf = GetComponent<Transform> ();
         rb = GetComponent<Rigidbody>();
@@ -33,7 +33,7 @@ public class ControllerMovement : MonoBehaviour {
             RaycastHit hit = new RaycastHit();
             Vector3 palmPos = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
             Vector3 direc = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection();
-            if (Physics.Raycast(palmPos, direc, out hit, 50.0f))
+            if (Physics.Raycast(palmPos, direc, out hit, 25.0f))
             {
                 if (!marker.activeInHierarchy)
                     marker.SetActive(true);
@@ -88,11 +88,34 @@ public class ControllerMovement : MonoBehaviour {
 
     public void launchGrapple() {
         GameObject rHand = GameObject.Find("RigidRoundHand_R");
-        if (rHand == null || !rHand.activeInHierarchy) Debug.Log("DEAD!");
-        else {
-            GameObject obj = Instantiate(hook);
-            obj.transform.position=GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
-            obj.GetComponent<Rigidbody>().velocity= GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection() * 5;
+        if (rHand == null || !rHand.activeInHierarchy)
+        {
+            Debug.Log("DEAD!");
+            return;
+        }
+        else
+        {
+            //GameObject obj = Instantiate(hook);
+            RaycastHit hit = new RaycastHit();
+            if (!Physics.Raycast(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition(), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), out hit, 25.0f)) return;
+            if (isGrappling)
+            {
+                Debug.Log("not grappling");
+                if (hit.collider.GetComponent<HingeJoint>() != null) hit.collider.GetComponent<HingeJoint>().connectedBody = null;
+                GetComponent<Transform>().rotation = Quaternion.LookRotation(new Vector3(GetComponent<Transform>().forward.x, 0, GetComponent<Transform>().forward.z));
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            } else
+            {
+                Debug.Log("grappling");
+                if (hit.collider.GetComponent<HingeJoint>() == null) hit.collider.gameObject.AddComponent<HingeJoint>();
+                hit.collider.GetComponent<HingeJoint>().connectedBody = GetComponent<Rigidbody>();
+                hit.collider.GetComponent<HingeJoint>().anchor = hit.collider.GetComponent<Transform>().InverseTransformPoint(hit.point);
+                hit.collider.GetComponent<HingeJoint>().axis = Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down);
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            }
+            isGrappling = !isGrappling;
+            //obj.transform.position = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
+            //obj.GetComponent<Rigidbody>().velocity = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection() * 5;
 
         }
     }
