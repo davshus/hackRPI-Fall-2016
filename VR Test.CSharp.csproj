@@ -182,6 +182,7 @@
     <Compile Include="Assets\OVR\Scripts\Util\OVRWaitCursor.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\Pseudochild.cs" />
+    <Compile Include="Assets\WhenToDie.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LeapMotion\Dependencies.txt" />

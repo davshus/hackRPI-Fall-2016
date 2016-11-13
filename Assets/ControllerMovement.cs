@@ -30,15 +30,12 @@ public class ControllerMovement : MonoBehaviour {
         }
         else
         {
-            //GameObject obj = Instantiate(hook);
-            //obj.transform.position = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
-            //obj.GetComponent<Rigidbody>().velocity = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection() * 5;
             RaycastHit hit = new RaycastHit();
             Vector3 palmPos = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
             Vector3 direc = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection();
             if (Physics.Raycast(palmPos, direc, out hit, 50.0f))
             {
-                if (!marker.active)
+                if (!marker.activeInHierarchy)
                     marker.SetActive(true);
                 marker.transform.position = hit.point;
             }
