@@ -75,19 +75,19 @@ public class ControllerMovement : MonoBehaviour {
                 Debug.Log("grappling");
                 grappled = hit.collider.gameObject;
                 rch = hit;
-                Debug.Log("1");
+                //Debug.Log("1");
                 if (hinge == null) {hinge = hit.collider.gameObject.AddComponent<HingeJoint>();}
-                Debug.Log("5");
+                //Debug.Log("5");
                 GameObject obj = Instantiate(hook);
                 obj.GetComponent<Transform>().position = rHand.GetComponent<RigidHand>().GetPalmPosition();
                 obj.GetComponent<Rigidbody>().velocity = hit.point - rHand.GetComponent<RigidHand>().GetPalmPosition();
                 hinge.connectedBody = GetComponent<Rigidbody>();
-                Debug.Log("6");
+                //Debug.Log("6");
                 hinge.anchor = hit.collider.GetComponent<Transform>().InverseTransformPoint(hit.point);
-                Debug.Log("7");
+                //Debug.Log("7");
                 Vector3 temp = Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down);
                 hinge.axis = Mathf.Sign(Vector3.Dot(Vector3.Cross(Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection()), temp)) > 0 ? temp : temp * -1;
-                Debug.Log("8");
+                //Debug.Log("8");
                 GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             }
             isGrappling = !isGrappling;
@@ -124,10 +124,10 @@ public class ControllerMovement : MonoBehaviour {
         {
             die();   
         }
-        if (collision.collider.name.Contains("Chkpt"))
+        if (collision.collider.gameObject.CompareTag("ChkPt"))
         {
-            Debug.Log(collision.collider.name.Substring(5));
-            chkpt = Int32.Parse(collision.collider.name.Substring(5)) > chkpt ? Int32.Parse(collision.collider.name.Substring(5)) : chkpt;
+            Debug.Log(collision.collider.name);
+            chkpt = Int32.Parse(collision.collider.name) > chkpt ? Int32.Parse(collision.collider.name) : chkpt;
         }
 
     }
