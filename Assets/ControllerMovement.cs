@@ -16,6 +16,8 @@ public class ControllerMovement : MonoBehaviour {
     public GameObject hook;
     public float jumpSpeed = 1;
     private bool isGrappling = false;
+    private GameObject grappled = null;
+    private int collisions = 0;
 	void Start () {
 		trf = GetComponent<Transform> ();
         rb = GetComponent<Rigidbody>();
@@ -63,13 +65,12 @@ public class ControllerMovement : MonoBehaviour {
 			x++;
     	}
 
-        if (ground && Mathf.Abs(rb.velocity.y) < 0.1)
+        if (collisions != 0 && Mathf.Abs(rb.velocity.y) < 0.1)
         {
             if (holding(OVRInput.Button.One))
             {
                 Vector3 f = tr.forward * z;
                 f *= speed * jumpSpeed;
-                ground = false;
                 f.y = jump;
                 rb.velocity = f;
             }
@@ -80,8 +81,10 @@ public class ControllerMovement : MonoBehaviour {
                 f.y = 0;
                 trf.position += f * Time.deltaTime;
             }
-        }  else if (pressed(OVRInput.Button.One))
+        }
+        if (pressed(OVRInput.Button.One) && collisions == 0)
         {
+            Debug.Log("Grapple begin!");
             launchGrapple();
         }
     }
@@ -98,19 +101,35 @@ public class ControllerMovement : MonoBehaviour {
             //GameObject obj = Instantiate(hook);
             RaycastHit hit = new RaycastHit();
             if (!Physics.Raycast(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition(), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), out hit, 25.0f)) return;
+            HingeJoint hinge = hit.collider.GetComponent<HingeJoint>();
             if (isGrappling)
             {
                 Debug.Log("not grappling");
-                if (hit.collider.GetComponent<HingeJoint>() != null) hit.collider.GetComponent<HingeJoint>().connectedBody = null;
-                GetComponent<Transform>().rotation = Quaternion.LookRotation(new Vector3(GetComponent<Transform>().forward.x, 0, GetComponent<Transform>().forward.z));
-                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                Destroy(grappled.GetComponent<HingeJoint>());
+                Debug.Log("Destroyed.");
+                
+                if (hit.collider.gameObject != grappled)
+                {
+                    Debug.Log("About to launch again.");
+                    isGrappling = false;
+                    launchGrapple();
+                    Debug.Log("Completed second launch.");
+                    return;
+                }
             } else
             {
                 Debug.Log("grappling");
-                if (hit.collider.GetComponent<HingeJoint>() == null) hit.collider.gameObject.AddComponent<HingeJoint>();
-                hit.collider.GetComponent<HingeJoint>().connectedBody = GetComponent<Rigidbody>();
-                hit.collider.GetComponent<HingeJoint>().anchor = hit.collider.GetComponent<Transform>().InverseTransformPoint(hit.point);
-                hit.collider.GetComponent<HingeJoint>().axis = Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down);
+                grappled = hit.collider.gameObject;
+                Debug.Log("1");
+                if (hinge == null) {hinge = hit.collider.gameObject.AddComponent<HingeJoint>();}
+                Debug.Log("5");
+                hinge.connectedBody = GetComponent<Rigidbody>();
+                Debug.Log("6");
+                hinge.anchor = hit.collider.GetComponent<Transform>().InverseTransformPoint(hit.point);
+                Debug.Log("7");
+                Vector3 temp = Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down);
+                hinge.axis = Mathf.Sign(Vector3.Dot(Vector3.Cross(Vector3.Cross(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), Vector3.down), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection()), temp)) > 0 ? temp : temp * -1;
+                Debug.Log("8");
                 GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             }
             isGrappling = !isGrappling;
@@ -131,6 +150,13 @@ public class ControllerMovement : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        ground = true;
+        //ground = true;
+        collisions++;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        GetComponent<Transform>().rotation = Quaternion.LookRotation(new Vector3(GetComponent<Transform>().forward.x, 0, GetComponent<Transform>().forward.z));
+        if (isGrappling) launchGrapple();
     }
+    void OnCollisionExit(Collision collision)
+    {
+        collisions--;    }
 }
