@@ -16,7 +16,7 @@ public class IgnoreHands : MonoBehaviour {
     private void decollide(Transform curr, Collider orig) {
         if (curr.GetComponent<Collider>() != null)
         {
-            Debug.Log(curr.gameObject.name);
+            //Debug.Log(curr.gameObject.name);
             Physics.IgnoreCollision(curr.GetComponent<Collider>(), GetComponent<Collider>());
         }
         foreach (Transform t in curr)

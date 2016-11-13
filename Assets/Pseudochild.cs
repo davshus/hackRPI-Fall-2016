@@ -15,6 +15,6 @@ public class Pseudochild : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		tr.localPosition = pseudoparent.transform.localPosition + offset;
-		tr.localRotation = Quaternion.LookRotation(new Vector3(pseudoparent.transform.forward.x, 0, pseudoparent.transform.forward.z));
+		tr.rotation = Quaternion.LookRotation(new Vector3(pseudoparent.transform.forward.x, 0, pseudoparent.transform.forward.z));
 	}
 }
