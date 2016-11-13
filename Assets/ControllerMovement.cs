@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Leap.Unity;
 using UnityEngine;
+using System;
 
 public class ControllerMovement : MonoBehaviour {
     // Use this for initialization
@@ -21,10 +22,16 @@ public class ControllerMovement : MonoBehaviour {
     public float grappleTraverseSpeed = 1;
     private LineRenderer lr;
     private RaycastHit rch;
+    public int chkpt = 0;
+    public const int worldNum = 6;
+    public GameObject[] respawns = new GameObject[worldNum];
+    private int layerMask;
     void Start () {
 		trf = GetComponent<Transform> ();
         rb = GetComponent<Rigidbody>();
         lr = GetComponent<LineRenderer>();
+        layerMask = 1 << 2;
+        layerMask = ~layerMask;
     }
 	
 	// Update is called once per frame
@@ -47,7 +54,7 @@ public class ControllerMovement : MonoBehaviour {
         {
             //GameObject obj = Instantiate(hook);
             RaycastHit hit = new RaycastHit();
-            if (!Physics.Raycast(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition(), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), out hit, 25.0f)) return;
+            if (!Physics.Raycast(GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition(), GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection(), out hit, 25.0f, layerMask)) return;
             HingeJoint hinge = hit.collider.GetComponent<HingeJoint>();
             if (isGrappling)
             {
@@ -103,15 +110,31 @@ public class ControllerMovement : MonoBehaviour {
     {
         //ground = true;
         collisions++;
-        if (isGrappling)
+/*        if (isGrappling)
         {
             Destroy(grappled.GetComponent<HingeJoint>());
             isGrappling = false;
+        }*/
+        if (!isGrappling)
+        {
+            GetComponent<Transform>().rotation = Quaternion.LookRotation(new Vector3(GetComponent<Transform>().forward.x, 0, GetComponent<Transform>().forward.z));
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
-        
-        GetComponent<Transform>().rotation = Quaternion.LookRotation(new Vector3(GetComponent<Transform>().forward.x, 0, GetComponent<Transform>().forward.z));
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        if (collision.collider.gameObject.CompareTag("Death"))
+        {
+            die();   
+        }
+        if (collision.collider.name.Contains("Chkpt"))
+        {
+            Debug.Log(collision.collider.name.Substring(5));
+            chkpt = Int32.Parse(collision.collider.name.Substring(5)) > chkpt ? Int32.Parse(collision.collider.name.Substring(5)) : chkpt;
+        }
 
+    }
+    void die()
+    {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Transform>().position = new Vector3(respawns[chkpt].transform.position.x, respawns[chkpt].transform.position.y + respawns[chkpt].transform.lossyScale.y / 2 + 3, respawns[chkpt].transform.position.z);
     }
     void OnCollisionExit(Collision collision)
     {
@@ -138,7 +161,7 @@ public class ControllerMovement : MonoBehaviour {
             RaycastHit hit = new RaycastHit();
             Vector3 palmPos = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetPalmPosition();
             Vector3 direc = GameObject.Find("RigidRoundHand_R").GetComponent<RigidHand>().GetArmDirection();
-            if (Physics.Raycast(palmPos, direc, out hit, 25.0f))
+            if (Physics.Raycast(palmPos, direc, out hit, 25.0f, layerMask))
             {
                 if (!marker.activeInHierarchy)
                     marker.SetActive(true);

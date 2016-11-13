@@ -152,6 +152,7 @@
     <Compile Include="Assets\LeapMotion\Scripts\VR\LeapVRTemporalWarping.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\VR\TemporalWarpingStatus.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\VR\VRHeightOffset.cs" />
+    <Compile Include="Assets\MovingPlatform.cs" />
     <Compile Include="Assets\OVR\Scripts\OVRBoundary.cs" />
     <Compile Include="Assets\OVR\Scripts\OVRCameraRig.cs" />
     <Compile Include="Assets\OVR\Scripts\OVRCommon.cs" />
@@ -182,6 +183,8 @@
     <Compile Include="Assets\OVR\Scripts\Util\OVRWaitCursor.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\Pseudochild.cs" />
+    <Compile Include="Assets\RotateY.cs" />
+    <Compile Include="Assets\Rotating.cs" />
     <Compile Include="Assets\WhenToDie.cs" />
   </ItemGroup>
   <ItemGroup>
